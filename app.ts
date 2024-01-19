@@ -20,3 +20,21 @@ function checkUrlExistence(url: string): Promise<string> {
     }, 1000);
   });
 }
+document
+  .getElementById("urlInput")
+  ?.addEventListener("input", function (event) {
+    const urlInput = (event.target as HTMLInputElement).value.trim();
+    const resultDiv = document.getElementById("result")!; // Non-null assertion here
+
+    clearTimeout(timeoutId);
+
+    if (isValidUrl(urlInput)) {
+      timeoutId = setTimeout(() => {
+        checkUrlExistence(urlInput).then((result) => {
+          resultDiv.textContent = result;
+        });
+      }, 500);
+    } else {
+      resultDiv.textContent = "Invalid URL format";
+    }
+  });
