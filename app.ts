@@ -1,40 +1,40 @@
-// app.ts
 let timeoutId: ReturnType<typeof setTimeout>;
 
 function isValidUrl(url: string): boolean {
   // Basic URL format validation
+  // const urlRegex =
+  //   /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\/)?$/;
+  // return urlRegex.test(url);
   const urlRegex =
-    /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\/)?$/;
+    /^(?:(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,})(\/[^/?#]+\/?)?([/?].*)?$/;
   return urlRegex.test(url);
 }
 
-function checkUrlExistence(url: string): Promise<string> {
+async function checkUrlExistence(url: string): Promise<string> {
   // Simulating asynchronous server call
   return new Promise((resolve) => {
     setTimeout(() => {
       // Mock server response - replace this with actual server call
       const exists = Math.random() < 0.5 ? "exists" : "does not exist";
       const type = Math.random() < 0.5 ? "file" : "folder";
-
       resolve(`URL ${exists} and is a ${type}.`);
     }, 1000);
   });
 }
-document
-  .getElementById("urlInput")
-  ?.addEventListener("input", function (event) {
-    const urlInput = (event.target as HTMLInputElement).value.trim();
-    const resultDiv = document.getElementById("result")!; // Non-null assertion here
+const urlInput = document.getElementById("urlInput") as HTMLInputElement;
+const resultDiv = document.getElementById("result")!;
 
-    clearTimeout(timeoutId);
+urlInput.addEventListener("input", async function () {
+  const url = urlInput.value.trim();
+  clearTimeout(timeoutId);
 
-    if (isValidUrl(urlInput)) {
-      timeoutId = setTimeout(() => {
-        checkUrlExistence(urlInput).then((result) => {
-          resultDiv.textContent = result;
-        });
-      }, 500);
-    } else {
-      resultDiv.textContent = "Invalid URL format";
-    }
-  });
+  if (isValidUrl(url)) {
+    timeoutId = setTimeout(async () => {
+      if (url === urlInput.value.trim()) {
+        resultDiv.textContent = await checkUrlExistence(url);
+      }
+    }, 500);
+  } else {
+    resultDiv.textContent = "Invalid URL format";
+  }
+});
