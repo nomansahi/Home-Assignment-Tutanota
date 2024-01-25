@@ -26,7 +26,7 @@ function checkUrlExistence(url) {
                 const exists = Math.random() < 0.5 ? "exists" : "does not exist";
                 const type = Math.random() < 0.5 ? "file" : "folder";
                 resolve(`URL ${exists} and is a ${type}.`);
-            }, 1000);
+            }, 0);
         });
     });
 }
@@ -41,7 +41,7 @@ urlInput.addEventListener("input", function () {
                 if (url === urlInput.value.trim()) {
                     resultDiv.textContent = yield checkUrlExistence(url);
                 }
-            }), 500);
+            }), 0);
         }
         else {
             resultDiv.textContent = "Invalid URL format";

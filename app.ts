@@ -18,7 +18,7 @@ async function checkUrlExistence(url: string): Promise<string> {
       const exists = Math.random() < 0.5 ? "exists" : "does not exist";
       const type = Math.random() < 0.5 ? "file" : "folder";
       resolve(`URL ${exists} and is a ${type}.`);
-    }, 1000);
+    }, 0);
   });
 }
 const urlInput = document.getElementById("urlInput") as HTMLInputElement;
@@ -33,7 +33,7 @@ urlInput.addEventListener("input", async function () {
       if (url === urlInput.value.trim()) {
         resultDiv.textContent = await checkUrlExistence(url);
       }
-    }, 500);
+    }, 0);
   } else {
     resultDiv.textContent = "Invalid URL format";
   }
